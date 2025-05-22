@@ -33,8 +33,13 @@ public:
     void addBack(ListType data); // O(n)
     void addFront(ListType data); // O(1)
 
+    void addBefore(int index, ListType value); // O(n)
+    void addAfter(int index, ListType value); // O(n)
+
     ListType removeBack(); // O(n)
     ListType removeFront(); // O(1)
+
+    ListType removeAt(int index); // O(n)
 
     ListType &operator[](size_t index); // O(n)
 
@@ -74,6 +79,41 @@ void LinkedList<ListType>::addFront(ListType data) {
     head = newNode;
     size++;
 }
+
+template<typename ListType>
+void LinkedList<ListType>::addBefore(int index, ListType value) {
+    if (index < 0 || index > size)
+        throw std::out_of_range("index out of range");
+    if (head == nullptr) {
+        addFront(value);
+    } else {
+        Node<ListType> *newNode = new Node<ListType>(value);
+        Node<ListType> *currentNode = head;
+        for (size_t i = 0; i < index - 1; i++) {
+            currentNode = currentNode->next;
+        }
+        newNode->next = currentNode->next;
+        currentNode->next = newNode;
+        size++;
+    }
+}
+
+template<typename ListType>
+void LinkedList<ListType>::addAfter(int index, ListType value) {
+    if (index < 0 || index >= size)
+        throw std::out_of_range("index out of range");
+    else {
+        Node<ListType> *newNode = new Node<ListType>(value);
+        Node<ListType> *currentNode = head;
+        for (size_t i = 0; i < index; i++) {
+            currentNode = currentNode->next;
+        }
+        newNode->next = currentNode->next;
+        currentNode->next = newNode;
+        size++;
+    }
+}
+
 template<typename ListType>
 ListType LinkedList<ListType>::removeBack() {
     if (head == nullptr) {
@@ -102,6 +142,31 @@ ListType LinkedList<ListType>::removeFront() {
     delete currentNode;
     size--;
     return value;
+}
+
+template<typename ListType>
+ListType LinkedList<ListType>::removeAt(const int index) {
+    if (index == 0 && head != nullptr) {
+        Node<ListType> *removedNode = head;
+        head = head->next;
+        ListType value = removedNode->value;
+        delete removedNode;
+        size--;
+        return value;
+    } else if (index < 0 || index >= size)
+        throw std::out_of_range("index out of range");
+    else {
+        Node<ListType> *currentNode = head;
+        for (size_t i = 0; i < index - 1; i++) {
+            currentNode = currentNode->next;
+        }
+        Node<ListType> *removedNode = currentNode->next;
+        ListType value = removedNode->value;
+        currentNode->next = removedNode->next;
+        delete removedNode;
+        size--;
+        return value;
+    }
 }
 
 template<typename ListType>

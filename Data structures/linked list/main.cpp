@@ -6,36 +6,23 @@ void test(int size);
 
 int main() {
     LinkedList<int> list;
-    for (int i = 1; i <= 10; i++) {
+    list.addBefore(0, 1000);
+    list.addAfter(0, 100);
+    for (size_t i = 0; i < 10; i++) {
         list.addBack(i);
     }
-    list.addFront(0);
-    for (int i = 0; i < list.getSize(); i++) {
+    list.addFront(-1);
+    for (size_t i = 0; i < list.getSize(); i++) {
         std::cout << list[i] << ' ';
     }
-    list.removeBack();
+    std::cout << std::endl;
+    list.removeAt(0);
     list.removeFront();
-
-    std::cout << '\n';
-
-    for (int i = 0; i < list.getSize(); i++) {
+    list.removeBack();
+    list.removeAt(list.getSize() / 2);
+    for (size_t i = 0; i < list.getSize(); i++) {
         std::cout << list[i] << ' ';
     }
-
-    std::cin.get();
-    test(100000);
-    std::cin.get();
-
+    std::cout << std::endl;
     return 0;
-}
-
-void test(const int size) {
-    LinkedList<int> list;
-    for (int i = 0; i < size; i++) {
-        list.addBack(i);
-    }
-    for (int i = 0; i < list.getSize(); i++) {
-        std::cout << list[i] << ' ';
-    }
-    std::cin.get();
 }
